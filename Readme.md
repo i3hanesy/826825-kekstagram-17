@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
-* Студент: [Андрей Бернгарт](https://up.htmlacademy.ru/javascript/17/user/826825).
-* Наставник: `Неизвестно`.
+* Студент: [Андрsей Бернгарт](https://up.htmlacademy.ru/javascript/17/user/826825).
+* Наставник: [Николай Солодухин](https://htmlacademy.ru/profile/nikolaysolodukhin).
 
 ---
 
