@@ -12,26 +12,52 @@ var comments = ['Всё отлично!', 'В целом всё неплохо. 
 
 var pictures = document.querySelector('.pictures');
 var pictureTemplate = document.querySelector('#picture').content.querySelector('a');
+var fragment = document.createDocumentFragment();
+var photos = [];
 
-var getPhotos = function (user, comment) {
-  var photos = [];
-
-  for (var i = 0; i < names.length; i++) {
-    photos[i] = {
-      avatar: 'img/avatar-' + (i + 1) + '.svg',
-      url: 'photos/' + (i + 1) + '.jpg',
-      likes: Math.floor(Math.random() * (200 - 15 + 1) + 15),
-      name: user[Math.floor(Math.random() * user.length)],
-      message: comment[Math.floor(Math.random() * comment.length)]
-    };
-
-    var picturesElement = pictureTemplate.cloneNode(true);
-
-    picturesElement.querySelector('.picture__comments').textContent = photos[i].message;
-    picturesElement.querySelector('.picture__likes').textContent = photos[i].likes;
-    picturesElement.querySelector('.picture__img').setAttribute('src', photos[i].url);
-    pictures.appendChild(picturesElement);
-  }
+// создает случайное число в диапазоне min - max
+var getRandomNumber = function (min, max) {
+  var rand = Math.floor(min + Math.random() * (max + 1 - min));
+  return rand;
 };
 
-getPhotos(names, comments);
+// Создает объекты массива со случайными данными из других массивов
+var getPhotos = function (user, comment, arrayForObject) {
+
+  for (var i = 0; i < user.length; i++) {
+    arrayForObject[i] = {
+      avatar: 'img/avatar-' + (i + 1) + '.svg',
+      url: 'photos/' + (i + 1) + '.jpg',
+      // интервал колличества лайков от 15 до 200
+      likes: getRandomNumber(15, 200),
+      name: user[getRandomNumber(0, user.length - 1)],
+      message: comment[getRandomNumber(0, comment.length - 1)]
+    };
+  }
+  return arrayForObject;
+};
+
+getPhotos(names, comments, photos);
+
+// создает элементы из массива объектов по шаблону
+var getTemplatesElements = function (templateElement, objectsArray) {
+  for (var i = 0; i < objectsArray.length; i++) {
+    var element = templateElement.cloneNode(true);
+    var object = objectsArray[i];
+    element.querySelector('.picture__comments').textContent = object.message;
+    element.querySelector('.picture__likes').textContent = object.likes;
+    element.querySelector('.picture__img').setAttribute('src', object.url);
+    fragment.appendChild(element);
+  }
+
+  return element;
+};
+
+getTemplatesElements(pictureTemplate, photos);
+
+// вставляет элементы из шаблона на страницу
+var insertElements = function (locationOfInsertion) {
+  locationOfInsertion.appendChild(fragment);
+};
+
+insertElements(pictures);
