@@ -10,6 +10,9 @@ var comments = ['Всё отлично!', 'В целом всё неплохо. 
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
+var minLikes = 15;
+var maxLikes = 200;
+
 var pictures = document.querySelector('.pictures');
 var pictureTemplate = document.querySelector('#picture').content.querySelector('a');
 var fragment = document.createDocumentFragment();
@@ -29,7 +32,7 @@ var getPhotos = function (user, comment, arrayForObject) {
       avatar: 'img/avatar-' + (i + 1) + '.svg',
       url: 'photos/' + (i + 1) + '.jpg',
       // интервал колличества лайков от 15 до 200
-      likes: getRandomNumber(15, 200),
+      likes: getRandomNumber(minLikes, maxLikes),
       name: user[getRandomNumber(0, user.length - 1)],
       message: comment[getRandomNumber(0, comment.length - 1)]
     };
