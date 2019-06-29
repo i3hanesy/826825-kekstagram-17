@@ -68,8 +68,8 @@ insertElements(pictures);
 // работа с фотографией
 
 var KEY_CODE = {
-  ENTER_KEYCODE: 13,
-  ESC_KEYCODE: 27
+  ENTER: 13,
+  ESC: 27
 };
 
 var uploadFile = document.querySelector('#upload-file');
@@ -82,7 +82,7 @@ var openOverlay = function () {
   imgOverlay.classList.remove('hidden');
   // отлавливает событие клавиши esc
   document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === KEY_CODE.ESC_KEYCODE) {
+    if (evt.keyCode === KEY_CODE.ESC) {
       closeOverlay();
     }
   });
@@ -98,6 +98,7 @@ var closeOverlay = function () {
 uploadFile.addEventListener('change', function () {
   openOverlay();
   // устанавливает значение 100%
+  // effectLevelValue.setAttribute('value', VALUE_MAX);
   getScaleValue(scaleValue);
 });
 
@@ -108,7 +109,7 @@ buttonCancel.addEventListener('click', function () {
 
 // отлавливает событие клавиши Enter
 buttonCancel.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === KEY_CODE.ENTER_KEYCODE) {
+  if (evt.keyCode === KEY_CODE.ENTER) {
     closeOverlay();
   }
 });
@@ -117,48 +118,49 @@ buttonCancel.addEventListener('keydown', function (evt) {
 
 var VALUE_MAX = 100;
 var GAP_SCALE = 25;
-
-var scaleControlSmaller = document.querySelector('.scale__control--smaller');
-var scaleControlBigger = document.querySelector('.scale__control--bigger');
+var SCALE_MAX = 3;
+var scaleControl = document.querySelector('.img-upload__scale');
 var scaleControlValue = document.querySelector('.scale__control--value');
 var imgUploadPreview = document.querySelector('.img-upload__preview');
 scaleControlValue.setAttribute('value', VALUE_MAX);
 var scaleValue = scaleControlValue.value;
 
-scaleControlBigger.addEventListener('click', function () {
-  var increaseScale = scaleValue + GAP_SCALE;
-  scaleValue = increaseScale > VALUE_MAX ? VALUE_MAX : increaseScale;
-  getScaleValue(scaleValue);
-});
-
-scaleControlSmaller.addEventListener('click', function () {
-  var reductionScale = scaleValue - GAP_SCALE;
-  scaleValue = reductionScale < GAP_SCALE ? GAP_SCALE : reductionScale;
+scaleControl.addEventListener('click', function (evt) {
+  var target = evt.target;
+  if (target.type === 'button' && target.classList.item(1) === 'scale__control--bigger') {
+    var increaseScale = scaleValue + GAP_SCALE;
+    scaleValue = increaseScale > VALUE_MAX ? VALUE_MAX : increaseScale;
+  } else if (target.type === 'button' && target.classList.item(1) === 'scale__control--smaller') {
+    var reductionScale = scaleValue - GAP_SCALE;
+    scaleValue = reductionScale < GAP_SCALE ? GAP_SCALE : reductionScale;
+  }
   getScaleValue(scaleValue);
 });
 
 var getScaleValue = function (val) {
   scaleControlValue.setAttribute('value', val + '%'); //
-  imgUploadPreview.setAttribute('style', 'transform: scale(' + val / VALUE_MAX + ')');
+  imgUploadPreview.style.transform = 'scale(' + val / VALUE_MAX + ')';
 };
 
 // обработчик фильтров
 var filter = document.querySelector('.img-upload__effects');
 var filterButton = document.querySelector('.effects__radio');
 var effectLevel = document.querySelector('.img-upload__effect-level');
-// var effectLevelPin = document.querySelector('.effect-level__pin');
-// var effectLevelValue = document.querySelector('effect-level__value');
+var effectLevelPin = effectLevel.querySelector('.effect-level__pin');
+var effectLevelValue = effectLevel.querySelector('.effect-level__value');
 
 filter.addEventListener('click', function (evt) {
   var target = evt.target;
   if (target.type !== 'radio') {
     return;
   }
+
   getFilters(target);
   removeEffectLevel(target);
+  imgUploadPreview.style.filter = '';
 });
 
-// выбирает фильтр
+// выбирает класс фильтра
 var getFilters = function (node) {
   imgUploadPreview.classList.remove('effects__preview--' + filterButton.value);
   filterButton = node;
@@ -167,10 +169,24 @@ var getFilters = function (node) {
 
 // удаляет ползунок при отсутствии фильтра
 var removeEffectLevel = function (noEffect) {
-  if (noEffect.value === 'none') {
-    effectLevel.classList.add('hidden');
-  } else {
-    effectLevel.classList.remove('hidden');
-  }
+  effectLevel.classList.toggle('hidden', noEffect.value === 'none');
 };
 
+
+// устанавлевает стиль фильтра при отпускании клавиши мыши
+effectLevelPin.addEventListener('mouseup', function () {
+  var valuePin = effectLevelValue.value;
+  var target = imgUploadPreview.classList.item(1);
+  var val = valuePin / VALUE_MAX;
+  var valRound = Math.round(val * SCALE_MAX);
+  var valRoundFromOne = valRound > 0 ? valRound : 1;
+  var valueToStyle = {
+    'effects__preview--chrome': 'grayscale(' + val + ')',
+    'effects__preview--sepia': 'sepia(' + val + ')',
+    'effects__preview--marvin': 'invert(' + valuePin + '%)',
+    'effects__preview--phobos': 'blur(' + valRound + 'px)',
+    'effects__preview--heat': 'brightness(' + valRoundFromOne + ')'
+  };
+
+  imgUploadPreview.style.filter = valueToStyle[target];
+});
