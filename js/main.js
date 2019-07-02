@@ -127,10 +127,10 @@ var scaleValue = scaleControlValue.value;
 
 scaleControl.addEventListener('click', function (evt) {
   var target = evt.target;
-  if (target.type === 'button' && target.classList.item(1) === 'scale__control--bigger') {
+  if (target.type === 'button' && target.classList.contains('scale__control--bigger')) {
     var increaseScale = scaleValue + GAP_SCALE;
     scaleValue = increaseScale > VALUE_MAX ? VALUE_MAX : increaseScale;
-  } else if (target.type === 'button' && target.classList.item(1) === 'scale__control--smaller') {
+  } else if (target.type === 'button' && target.classList.contains('scale__control--smaller')) {
     var reductionScale = scaleValue - GAP_SCALE;
     scaleValue = reductionScale < GAP_SCALE ? GAP_SCALE : reductionScale;
   }
