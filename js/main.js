@@ -127,10 +127,11 @@ var scaleValue = scaleControlValue.value;
 
 scaleControl.addEventListener('click', function (evt) {
   var target = evt.target;
-  if (target.type === 'button' && target.classList.contains('scale__control--bigger')) {
+  var typeButton = target.type === 'button';
+  if (typeButton && target.classList.contains('scale__control--bigger')) {
     var increaseScale = scaleValue + GAP_SCALE;
     scaleValue = increaseScale > VALUE_MAX ? VALUE_MAX : increaseScale;
-  } else if (target.type === 'button' && target.classList.contains('scale__control--smaller')) {
+  } else if (typeButton && target.classList.contains('scale__control--smaller')) {
     var reductionScale = scaleValue - GAP_SCALE;
     scaleValue = reductionScale < GAP_SCALE ? GAP_SCALE : reductionScale;
   }
@@ -176,17 +177,16 @@ var removeEffectLevel = function (noEffect) {
 // устанавлевает стиль фильтра при отпускании клавиши мыши
 effectLevelPin.addEventListener('mouseup', function () {
   var valuePin = effectLevelValue.value;
-  var target = imgUploadPreview.classList.item(1);
   var val = valuePin / VALUE_MAX;
   var valRound = Math.round(val * SCALE_MAX);
   var valRoundFromOne = valRound > 0 ? valRound : 1;
   var valueToStyle = {
-    'effects__preview--chrome': 'grayscale(' + val + ')',
-    'effects__preview--sepia': 'sepia(' + val + ')',
-    'effects__preview--marvin': 'invert(' + valuePin + '%)',
-    'effects__preview--phobos': 'blur(' + valRound + 'px)',
-    'effects__preview--heat': 'brightness(' + valRoundFromOne + ')'
+    'chrome': 'grayscale(' + val + ')',
+    'sepia': 'sepia(' + val + ')',
+    'marvin': 'invert(' + valuePin + '%)',
+    'phobos': 'blur(' + valRound + 'px)',
+    'heat': 'brightness(' + valRoundFromOne + ')'
   };
 
-  imgUploadPreview.style.filter = valueToStyle[target];
+  imgUploadPreview.style.filter = valueToStyle[filterButton.value];
 });
