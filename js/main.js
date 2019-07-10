@@ -76,16 +76,17 @@ var uploadFile = document.querySelector('#upload-file');
 var imgOverlay = document.querySelector('.img-upload__overlay');
 
 var buttonCancel = document.querySelector('#upload-cancel');
+var onEscKeydown = function (evt) {
+  if (evt.keyCode === KEY_CODE.ESC) {
+    closeOverlay();
+  }
+};
 
 // открывает обработчик фотографий
 var openOverlay = function () {
   imgOverlay.classList.remove('hidden');
   // отлавливает событие клавиши esc
-  document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === KEY_CODE.ESC) {
-      closeOverlay();
-    }
-  });
+  document.addEventListener('keydown', onEscKeydown);
 };
 
 // закрывает обработчик фотографий
@@ -98,7 +99,6 @@ var closeOverlay = function () {
 uploadFile.addEventListener('change', function () {
   openOverlay();
   // устанавливает значение 100%
-  // effectLevelValue.setAttribute('value', VALUE_MAX);
   getScaleValue(scaleValue);
 });
 
@@ -113,6 +113,7 @@ buttonCancel.addEventListener('keydown', function (evt) {
     closeOverlay();
   }
 });
+
 
 // изменение размера изображения по кнопкам '+' и '-'
 
@@ -149,6 +150,7 @@ var filterButton = document.querySelector('.effects__radio');
 var effectLevel = document.querySelector('.img-upload__effect-level');
 var effectLevelPin = effectLevel.querySelector('.effect-level__pin');
 var effectLevelValue = effectLevel.querySelector('.effect-level__value');
+var filters = {};
 
 filter.addEventListener('click', function (evt) {
   var target = evt.target;
@@ -161,12 +163,15 @@ filter.addEventListener('click', function (evt) {
   imgUploadPreview.style.filter = '';
 });
 
+
 // выбирает класс фильтра
 var getFilters = function (node) {
   imgUploadPreview.classList.remove('effects__preview--' + filterButton.value);
   filterButton = node;
   imgUploadPreview.classList.add('effects__preview--' + filterButton.value);
+  filters.filterName = filterButton.value;
 };
+
 
 // удаляет ползунок при отсутствии фильтра
 var removeEffectLevel = function (noEffect) {
@@ -188,5 +193,17 @@ effectLevelPin.addEventListener('mouseup', function () {
     'heat': 'brightness(' + valRoundFromOne + ')'
   };
 
-  imgUploadPreview.style.filter = valueToStyle[filterButton.value];
+  imgUploadPreview.style.filter = valueToStyle[filters.filterName];
+});
+
+var imgUploadText = document.querySelector('.img-upload__text');
+var textDescription = imgUploadText.querySelector('.text__description');
+
+
+textDescription.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onEscKeydown);
+});
+
+textDescription.addEventListener('blur', function () {
+  document.addEventListener('keydown', onEscKeydown);
 });
