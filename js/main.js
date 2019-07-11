@@ -221,8 +221,8 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
     };
 
     var valueLeftPin = effectLevelPin.offsetLeft - shift.x;
-    valueLeftPin = valueLeftPin < VALUE.LEFT_PIN_MAX ? valueLeftPin : valueLeftPin = VALUE.LEFT_PIN_MAX;
-    valueLeftPin = valueLeftPin > VALUE.LEFT_PIN_MIN ? valueLeftPin : valueLeftPin = VALUE.LEFT_PIN_MIN;
+    valueLeftPin = valueLeftPin < VALUE.LEFT_PIN_MAX ? valueLeftPin : VALUE.LEFT_PIN_MAX;
+    valueLeftPin = valueLeftPin > VALUE.LEFT_PIN_MIN ? valueLeftPin : VALUE.LEFT_PIN_MIN;
 
     var relationScaleToValue = Math.round(VALUE.MAX / VALUE.LEFT_PIN_MAX * valueLeftPin);
 
