@@ -158,6 +158,11 @@ var effectLevelDepth = effectLevel.querySelector('.effect-level__depth');
 var effectLevelValue = effectLevel.querySelector('.effect-level__value');
 var filters = {};
 
+var getStyleSlider = function (value) {
+  effectLevelPin.style.left = value + 'px';
+  effectLevelDepth.style.width = value + 'px';
+};
+
 filter.addEventListener('click', function (evt) {
   var target = evt.target;
   if (target.type !== 'radio') {
@@ -168,8 +173,7 @@ filter.addEventListener('click', function (evt) {
   removeEffectLevel(target);
   effectLevelValue.setAttribute('value', VALUE.MAX);
   imgUploadPreview.style.filter = '';
-  effectLevelPin.style.left = VALUE.LEFT_PIN_MAX + 'px';
-  effectLevelDepth.style.width = VALUE.LEFT_PIN_MAX + 'px';
+  getStyleSlider(VALUE.LEFT_PIN_MAX);
 });
 
 
@@ -226,8 +230,7 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
 
     var relationScaleToValue = Math.round(VALUE.MAX / VALUE.LEFT_PIN_MAX * valueLeftPin);
 
-    effectLevelPin.style.left = valueLeftPin + 'px';
-    effectLevelDepth.style.width = valueLeftPin + 'px';
+    getStyleSlider(valueLeftPin);
     effectLevelValue.setAttribute('value', relationScaleToValue);
 
     var valuePin = effectLevelValue.value;
