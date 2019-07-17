@@ -2,8 +2,7 @@
 (function () {
 // создает случайное число в диапазоне min - max
   var getRandomNumber = function (min, max) {
-    var rand = Math.floor(min + Math.random() * (max + 1 - min));
-    return rand;
+    return Math.floor(min + Math.random() * (max + 1 - min));
   };
 
   // Создает объекты массива со случайными данными из других массивов

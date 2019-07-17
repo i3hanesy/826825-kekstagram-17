@@ -17,5 +17,4 @@
     maxLikes: 200,
     photos: []
   };
-
 })();

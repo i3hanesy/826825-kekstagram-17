@@ -10,8 +10,9 @@
   var filters = {};
 
   var getStyleSlider = function (value) {
-    effectLevelPin.style.left = value + 'px';
-    effectLevelDepth.style.width = value + 'px';
+    var valueInPx = value + 'px';
+    effectLevelPin.style.left = valueInPx;
+    effectLevelDepth.style.width = valueInPx;
   };
 
   filter.addEventListener('click', function (evt) {
