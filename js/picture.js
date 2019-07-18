@@ -1,9 +1,7 @@
 'use strict';
 (function () {
 
-  // var onError = function (message) {
-  //   console.error(message);
-  // };
+  var XHR_URL = 'https://js.dump.academy/kekstagram/data';
 
   var onSuccess = function (data) {
 
@@ -35,7 +33,7 @@
     insertElements(pictures);
   };
 
-  window.load('https://js.dump.academy/kekstagram/data', onSuccess);
+  window.load(XHR_URL, onSuccess);
 
 })();
 
