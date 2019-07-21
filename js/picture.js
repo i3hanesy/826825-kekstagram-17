@@ -14,7 +14,7 @@
       for (var i = 0; i < objectsArray.length; i++) {
         var element = templateElement.cloneNode(true);
         var object = objectsArray[i];
-        element.querySelector('.picture__comments').textContent = object.comments;
+        element.querySelector('.picture__comments').textContent = object.comments.length;
         element.querySelector('.picture__likes').textContent = object.likes;
         element.querySelector('.picture__img').setAttribute('src', object.url);
         fragment.appendChild(element);
