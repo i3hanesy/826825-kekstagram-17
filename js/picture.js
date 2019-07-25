@@ -7,16 +7,40 @@
   var imgFilter = document.querySelector('.img-filters');
   var imgFiltersForm = imgFilter.querySelector('.img-filters__form');
   var pictures = document.querySelector('.pictures');
-  var imgFilterButton = imgFiltersForm.querySelector('.img-filters__button--active');
+  var pictureTemplate = document.querySelector('#picture').content.querySelector('a');
+
+  var clearPictures = function () {
+    var pictureElements = pictures.querySelectorAll('a');
+    pictureElements.forEach(function (node) {
+      node.parentNode.removeChild(node);
+    });
+  };
+
+  var getShuffleArray = function (array) {
+    array.sort(function () {
+      return 0.5 - Math.random();
+    });
+    return array;
+  };
+
+  var getSortArray = function (array) {
+    array.sort(function (first, second) {
+      if (first.comments.length < second.comments.length) {
+        return 1;
+      } else if (first.comments.length > second.comments.length) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    return array;
+  };
 
 
   var getPictures = function (dataArray) {
-    var pictureTemplate = document.querySelector('#picture').content.querySelector('a');
     var fragment = document.createDocumentFragment();
 
-    while (pictures.contains(pictures.querySelector('.picture'))) {
-      pictures.removeChild(pictures.querySelector('.picture'));
-    }
+    clearPictures();
 
     var getTemplatesElements = function (templateElement, objectsArray) {
       for (var i = 0; i < objectsArray.length; i++) {
@@ -53,54 +77,28 @@
   };
 
   var onImgFiltersFormClick = function (evt) {
-    var target = evt.target;
-    var typeButton = target.type === 'button';
+    var buttonElement = evt.target;
+    var typeButton = buttonElement.type === 'button';
 
     if (!typeButton) {
       return;
     }
 
-    imgFilterButton.classList.remove('img-filters__button--active');
-    imgFilterButton = target;
-    imgFilterButton.classList.add('img-filters__button--active');
+    var activeButton = imgFiltersForm.querySelector('.img-filters__button--active');
+    activeButton.classList.remove('img-filters__button--active');
+    buttonElement.classList.add('img-filters__button--active');
 
     var dataForWork = dataCopy.slice();
 
-    if (target.id === 'filter-popular') {
+    if (buttonElement.id === 'filter-popular') {
       getPictures(dataCopy);
-
-    } else if (target.id === 'filter-new') {
-
-      var shuffleArray = function (arr) {
-        var j;
-        var temp;
-        for (var i = arr.length - 1; i > 0; i--) {
-          j = Math.floor(Math.random() * (i + 1));
-          temp = arr[j];
-          arr[j] = arr[i];
-          arr[i] = temp;
-        }
-
-        return arr;
-      };
-
-      shuffleArray(dataForWork);
-      getPictures(dataForWork.slice(0, SHOW_ITEMS_TO));
-
-    } else if (target.id === 'filter-discussed') {
-
-      dataForWork.sort(function (first, second) {
-        if (first.comments.length < second.comments.length) {
-          return 1;
-        } else if (first.comments.length > second.comments.length) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-      getPictures(dataForWork);
-
+    } else if (buttonElement.id === 'filter-new') {
+      getPictures(getShuffleArray(dataForWork).slice(0, SHOW_ITEMS_TO));
+    } else if (buttonElement.id === 'filter-discussed') {
+      getPictures(getSortArray(dataForWork));
     }
+
+    return;
   };
 
   window.load(XHR_URL, onSuccess);
