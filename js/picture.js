@@ -79,6 +79,11 @@
   var onImgFiltersFormClick = function (evt) {
     var buttonElement = evt.target;
     var typeButton = buttonElement.type === 'button';
+    var FILTER = {
+      POPULAR: buttonElement.id === 'filter-popular',
+      NEW: buttonElement.id === 'filter-new',
+      DISCUSSED: buttonElement.id === 'filter-discussed'
+    };
 
     if (!typeButton) {
       return;
@@ -90,12 +95,19 @@
 
     var dataForWork = dataCopy.slice();
 
-    if (buttonElement.id === 'filter-popular') {
+    if (FILTER.POPULAR) {
       getPictures(dataCopy);
-    } else if (buttonElement.id === 'filter-new') {
+      return;
+    }
+
+    if (FILTER.NEW) {
       getPictures(getShuffleArray(dataForWork).slice(0, SHOW_ITEMS_TO));
-    } else if (buttonElement.id === 'filter-discussed') {
+      return;
+    }
+
+    if (FILTER.DISCUSSED) {
       getPictures(getSortArray(dataForWork));
+      return;
     }
 
     return;
