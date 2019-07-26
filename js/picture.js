@@ -2,13 +2,45 @@
 (function () {
 
   var XHR_URL = 'https://js.dump.academy/kekstagram/data';
+  var SHOW_ITEMS_TO = 10;
 
-  var onSuccess = function (data) {
+  var imgFilter = document.querySelector('.img-filters');
+  var imgFiltersForm = imgFilter.querySelector('.img-filters__form');
+  var pictures = document.querySelector('.pictures');
+  var pictureTemplate = document.querySelector('#picture').content.querySelector('a');
 
-    //  создает элементы из массива объектов по шаблону
-    var pictures = document.querySelector('.pictures');
-    var pictureTemplate = document.querySelector('#picture').content.querySelector('a');
+  var clearPictures = function () {
+    var pictureElements = pictures.querySelectorAll('a');
+    pictureElements.forEach(function (node) {
+      node.parentNode.removeChild(node);
+    });
+  };
+
+  var getShuffleArray = function (array) {
+    array.sort(function () {
+      return 0.5 - Math.random();
+    });
+    return array;
+  };
+
+  var getSortArray = function (array) {
+    array.sort(function (first, second) {
+      if (first.comments.length < second.comments.length) {
+        return 1;
+      } else if (first.comments.length > second.comments.length) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    return array;
+  };
+
+
+  var getPictures = function (dataArray) {
     var fragment = document.createDocumentFragment();
+
+    clearPictures();
 
     var getTemplatesElements = function (templateElement, objectsArray) {
       for (var i = 0; i < objectsArray.length; i++) {
@@ -23,7 +55,8 @@
       return element;
     };
 
-    getTemplatesElements(pictureTemplate, data);
+    getTemplatesElements(pictureTemplate, dataArray);
+
 
     // вставляет элементы из шаблона на страницу
     var insertElements = function (locationOfInsertion) {
@@ -33,7 +66,57 @@
     insertElements(pictures);
   };
 
+  var dataCopy = [];
+
+  var onSuccess = function (data) {
+
+    dataCopy = data;
+
+    getPictures(data);
+    imgFilter.classList.remove('img-filters--inactive');
+  };
+
+  var onImgFiltersFormClick = function (evt) {
+    var buttonElement = evt.target;
+    var typeButton = buttonElement.type === 'button';
+    var FILTER = {
+      POPULAR: buttonElement.id === 'filter-popular',
+      NEW: buttonElement.id === 'filter-new',
+      DISCUSSED: buttonElement.id === 'filter-discussed'
+    };
+
+    if (!typeButton) {
+      return;
+    }
+
+    var activeButton = imgFiltersForm.querySelector('.img-filters__button--active');
+    activeButton.classList.remove('img-filters__button--active');
+    buttonElement.classList.add('img-filters__button--active');
+
+    var dataForWork = dataCopy.slice();
+
+    if (FILTER.POPULAR) {
+      getPictures(dataCopy);
+      return;
+    }
+
+    if (FILTER.NEW) {
+      getPictures(getShuffleArray(dataForWork).slice(0, SHOW_ITEMS_TO));
+      return;
+    }
+
+    if (FILTER.DISCUSSED) {
+      getPictures(getSortArray(dataForWork));
+      return;
+    }
+
+    return;
+  };
+
   window.load(XHR_URL, onSuccess);
 
-})();
+  var onFiltersFormTimeOutClick = window.debounce(onImgFiltersFormClick);
 
+  imgFiltersForm.addEventListener('click', onFiltersFormTimeOutClick);
+
+})();
