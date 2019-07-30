@@ -18,7 +18,14 @@ window.util = (function () {
       if (evt.keyCode === KEY_CODE.ENTER) {
         action();
       }
+    },
+    clearDomElements: function (parentElement, tagElement) {
+      var domElement = parentElement.querySelectorAll(tagElement);
+      domElement.forEach(function (node) {
+        node.parentNode.removeChild(node);
+      });
     }
+
   };
 
 })();
