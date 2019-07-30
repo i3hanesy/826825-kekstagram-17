@@ -30,20 +30,26 @@
   bigPictureCancel.addEventListener('click', closeBigPicture);
 
   var getBigPicture = function (arrayElement) {
+    var commentArrayLenght = arrayElement.comments.length;
+
     openBigPicture();
     bigPictureImg.setAttribute('src', arrayElement.url);
     licesCout.textContent = arrayElement.likes;
-    commentsCount.textContent = arrayElement.comments.length;
+    commentsCount.textContent = commentArrayLenght;
     socialCaption.textContent = arrayElement.description;
 
     window.util.clearDomElements(commentsList, 'li');
 
-    for (var i = 0; i < arrayElement.comments.length; i++) {
+    for (var i = 0; i < commentArrayLenght; i++) {
       var commentItem = comment.cloneNode(true);
 
-      commentItem.querySelector('.social__picture').src = arrayElement.comments[i].avatar;
-      commentItem.querySelector('.social__picture').alt = arrayElement.comments[i].name;
-      commentItem.querySelector('.social__text').textContent = arrayElement.comments[i].message;
+      var socialPicture = commentItem.querySelector('.social__picture');
+      var commentArray = arrayElement.comments[i];
+      var socialText = commentItem.querySelector('.social__text');
+
+      socialPicture.src = commentArray.avatar;
+      socialPicture.alt = commentArray.name;
+      socialText.textContent = commentArray.message;
       commentsList.appendChild(commentItem);
     }
     socialCommentCount.classList.add('visually-hidden');

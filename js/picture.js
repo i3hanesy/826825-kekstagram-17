@@ -64,7 +64,8 @@
   var onSuccess = function (data) {
 
     dataCopy = data;
-    window.big.getBigPicture(dataCopy[0]);
+    var checkedData = dataCopy[0];
+    window.big.getBigPicture(checkedData);
     getPictures(data);
     imgFilter.classList.remove('img-filters--inactive');
   };
@@ -90,17 +91,14 @@
 
     if (FILTER.POPULAR) {
       getPictures(dataCopy);
-      return;
     }
 
     if (FILTER.NEW) {
       getPictures(getShuffleArray(dataForWork).slice(0, SHOW_ITEMS_TO));
-      return;
     }
 
     if (FILTER.DISCUSSED) {
       getPictures(getSortArray(dataForWork));
-      return;
     }
 
     return;
