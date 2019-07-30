@@ -64,11 +64,32 @@
   var onSuccess = function (data) {
 
     dataCopy = data;
-    var checkedData = dataCopy[0];
-    window.big.getBigPicture(checkedData);
     getPictures(data);
     imgFilter.classList.remove('img-filters--inactive');
+
   };
+
+  pictures.addEventListener('click', function (evt) {
+    var pictureClick = evt.target;
+    var pictureNumber;
+    var picture = pictures.querySelector('img');
+    var pictureLinc = pictures.querySelector('.picture');
+
+    if (pictureClick.tagName !== picture.tagName && pictureClick.tagName !== pictureLinc.tagName) {
+      return;
+    }
+    if (pictureClick.tagName !== picture.tagName) {
+      pictureNumber = pictureClick.firstElementChild.getAttribute('src');
+    } else {
+      pictureNumber = pictureClick.getAttribute('src');
+    }
+    var selectedPhoto = dataCopy.filter(function (it) {
+      return it.url === pictureNumber;
+    });
+    var showElement = selectedPhoto[0];
+
+    window.big.getBigPicture(showElement);
+  });
 
   var onImgFiltersFormClick = function (evt) {
     var buttonElement = evt.target;
@@ -109,5 +130,10 @@
   imgFiltersForm.addEventListener('click', onFiltersFormTimeOutClick);
 
   window.load(XHR_URL, onSuccess);
+
+  window.pictures = {
+    pictures: pictures,
+    dataCopy: dataCopy
+  };
 
 })();
