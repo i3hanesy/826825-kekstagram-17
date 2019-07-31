@@ -76,9 +76,9 @@
     var picture = pictureLink.querySelector('img');
 
     var clickedPicture = pictureTarget.className === picture.className;
-    var pressedPictureLinc = pictureTarget.className === pictureLink.className;
+    var pressedPictureLink = pictureTarget.className === pictureLink.className;
 
-    if (!clickedPicture && !pressedPictureLinc) {
+    if (!clickedPicture && !pressedPictureLink) {
       return;
     }
 
