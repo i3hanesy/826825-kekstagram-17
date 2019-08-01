@@ -34,22 +34,28 @@
       if (checkArray[i].charAt(0) !== '#') {
         return 'хэш-тег должен начинаться с символа # (решётка)';
       }
+
       if (checkArray[i] === '#') {
         return 'хеш-тег не может состоять только из одной решётки;';
       }
+
       if (checkArray[i].indexOf('#', 1) >= 1) {
         return 'Хэш-теги разделяются пробелами';
       }
+
       if (lowCaseHashTags.indexOf(lowCaseHashTags[i]) !== i) {
         return 'Один и тот же хэш-тег не может быть использован дважды';
       }
+
       if (checkArray.length > HASHTAG_MAX_COUNT) {
         return 'Нельзя указать больше ' + HASHTAG_MAX_COUNT + ' хэш-тегов';
       }
+
       if (checkArray[i].length > HASHTAG_MAX_LENGHT) {
         return 'Хэштег не может содержать больше ' + HASHTAG_MAX_LENGHT + ' символов, включая решётку';
       }
     }
+
     return false;
   };
 
