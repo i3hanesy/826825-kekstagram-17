@@ -28,6 +28,10 @@
 
   var getCheckHachTag = function (checkArray) {
 
+    if (hashTagsFeld.value === '') {
+      return false;
+    }
+
     for (var i = 0; i < checkArray.length; i++) {
       lowCaseHashTags[i] = checkArray[i].toLowerCase();
 
@@ -60,9 +64,6 @@
   };
 
   var showError = function () {
-    if (hashTagsFeld.value === '') {
-      return false;
-    }
 
     var error = getCheckHachTag(hashTagsFeldArray);
 
