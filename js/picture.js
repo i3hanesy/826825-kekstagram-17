@@ -135,7 +135,7 @@
 
   imgFiltersForm.addEventListener('click', onFiltersFormTimeOutClick);
 
-  window.load(XHR_URL, onSuccess);
+  window.load.getData(XHR_URL, onSuccess);
 
   window.pictures = {
     pictures: pictures

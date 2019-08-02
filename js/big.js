@@ -30,6 +30,13 @@
   bigPictureCancel.addEventListener('click', closeBigPicture);
 
   var getBigPicture = function (arrayElement) {
+
+    commentsLoader.addEventListener('click', function () {
+
+    });
+
+    // var sortArray = arrayElement.comments.slice(0, 5);
+
     var commentArrayLenght = arrayElement.comments.length;
 
     openBigPicture();
@@ -53,7 +60,7 @@
       commentsList.appendChild(commentItem);
     }
     socialCommentCount.classList.add('visually-hidden');
-    commentsLoader.classList.add('visually-hidden');
+    // commentsLoader.classList.add('visually-hidden');
   };
 
   window.big = {

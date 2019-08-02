@@ -6,7 +6,6 @@
 
 
   var hashTagsFeld = document.querySelector('.text__hashtags');
-  var imgUploadSubmit = document.querySelector('.img-upload__submit');
   var hashTagsFeldArray = [];
   var lowCaseHashTags = [];
 
@@ -58,6 +57,7 @@
       if (checkArray[i].length > HASHTAG_MAX_LENGHT) {
         return 'Хэштег не может содержать больше ' + HASHTAG_MAX_LENGHT + ' символов, включая решётку';
       }
+
     }
 
     return false;
@@ -75,8 +75,9 @@
     return false;
   };
 
-  imgUploadSubmit.addEventListener('click', function () {
-    showError();
-  });
+  window.hashtag = {
+    showError: showError,
+    hashTagsFeld: hashTagsFeld
+  };
 
 })();

@@ -111,4 +111,12 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  window.form = {
+    textDescription: textDescription,
+    removeEffectLevel: removeEffectLevel,
+    effectLevelValue: effectLevelValue,
+    effectLevel: effectLevel
+  };
+
 })();
