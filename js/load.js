@@ -3,10 +3,11 @@
 (function () {
   var LOAD_TIME = 10000;
   var OK_STATUS = 200;
+  var xhr;
 
-  window.load = function (url, onSuccess, onError) {
-    var xhr = new XMLHttpRequest();
+  var getServerData = function (onSuccess, onError) {
 
+    xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
@@ -25,9 +26,26 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = LOAD_TIME; // 10s
-
-    xhr.open('GET', url);
-    xhr.send();
+    xhr.timeout = LOAD_TIME;
   };
+
+  window.load = {
+
+    getData: function (url, success, fail) {
+
+      getServerData(success, fail);
+      xhr.open('GET', url);
+      xhr.send();
+
+    },
+
+    uploadData: function (url, data, success, fail) {
+
+      getServerData(success, fail);
+      xhr.open('POST', url);
+      xhr.send(data);
+
+    }
+  };
+
 })();
