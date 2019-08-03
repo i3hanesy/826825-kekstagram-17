@@ -1,82 +1,68 @@
 'use strict';
 
 (function () {
+
   var HASHTAG_MAX_LENGHT = 20;
   var HASHTAG_MAX_COUNT = 5;
 
-
   var hashTagsFeld = document.querySelector('.text__hashtags');
-  var hashTagsFeldArray = [];
-  var lowCaseHashTags = [];
 
-  hashTagsFeld.addEventListener('focus', function () {
-    document.removeEventListener('keydown', window.preview.onEscKeydown);
-  });
 
-  hashTagsFeld.addEventListener('blur', function () {
-    document.addEventListener('keydown', window.preview.onEscKeydown);
-  });
-
-  hashTagsFeld.addEventListener('input', function () {
-    hashTagsFeldArray = hashTagsFeld.value.split(' ');
+  var getCheckHachTag = function (inputArray) {
+    if (inputArray === '') {
+      return '';
+    }
 
     hashTagsFeld.style.outline = 'none';
-    hashTagsFeld.setCustomValidity('');
+
+    var hashTagsArray = inputArray.toLowerCase().split(' ');
+
+    if (hashTagsArray.length > HASHTAG_MAX_COUNT) {
+      return 'Нельзя указывать больше ' + HASHTAG_MAX_COUNT + ' хэш-тегов';
+    }
+
+    for (var i = 0; i < hashTagsArray.length; i++) {
+      var hashtag = hashTagsArray[i];
+
+      if (hashtag[0] !== '#') {
+        return 'Хэш-тег должен начинаться с символа # (решётка)';
+      }
+
+      if (hashtag === '#') {
+        return 'Хеш-тег не может состоять только из одной решётки';
+      }
+
+      var cutHashtag = hashtag.slice(1);
+
+      if (cutHashtag.indexOf('#') !== -1) {
+        return 'Отсутствуют пробелы между хэш-тегами';
+      }
+
+      if (hashTagsArray.indexOf(hashtag) !== i) {
+        return 'Используйте разные хэш-теги, причем #Хэш-Тег и #хЭШ-тЕГ один и тот-же хеш-тег';
+      }
+
+      if (hashtag.length > HASHTAG_MAX_LENGHT) {
+        return 'Хэш-тег не может содержать больше ' + HASHTAG_MAX_LENGHT + ' символов, включая решётку';
+      }
+    }
+
+    return '';
+  };
+
+
+  hashTagsFeld.addEventListener('input', function () {
+
+    var error = getCheckHachTag(hashTagsFeld.value);
+    hashTagsFeld.setCustomValidity(error);
+
+    if (error !== '') {
+      hashTagsFeld.style.outline = '2px solid red';
+    }
 
   });
 
-  var getCheckHachTag = function (checkArray) {
-
-    if (hashTagsFeld.value === '') {
-      return false;
-    }
-
-    for (var i = 0; i < checkArray.length; i++) {
-      lowCaseHashTags[i] = checkArray[i].toLowerCase();
-
-      if (checkArray[i].charAt(0) !== '#') {
-        return 'хэш-тег должен начинаться с символа # (решётка)';
-      }
-
-      if (checkArray[i] === '#') {
-        return 'хеш-тег не может состоять только из одной решётки;';
-      }
-
-      if (checkArray[i].indexOf('#', 1) >= 1) {
-        return 'Хэш-теги разделяются пробелами';
-      }
-
-      if (lowCaseHashTags.indexOf(lowCaseHashTags[i]) !== i) {
-        return 'Один и тот же хэш-тег не может быть использован дважды';
-      }
-
-      if (checkArray.length > HASHTAG_MAX_COUNT) {
-        return 'Нельзя указать больше ' + HASHTAG_MAX_COUNT + ' хэш-тегов';
-      }
-
-      if (checkArray[i].length > HASHTAG_MAX_LENGHT) {
-        return 'Хэштег не может содержать больше ' + HASHTAG_MAX_LENGHT + ' символов, включая решётку';
-      }
-
-    }
-
-    return false;
-  };
-
-  var showError = function () {
-
-    var error = getCheckHachTag(hashTagsFeldArray);
-
-    if (error) {
-      hashTagsFeld.style.outline = '4px solid red';
-      hashTagsFeld.setCustomValidity(error);
-      return true;
-    }
-    return false;
-  };
-
   window.hashtag = {
-    showError: showError,
     hashTagsFeld: hashTagsFeld
   };
 

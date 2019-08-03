@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  // обработчик фильтров
+
   var filter = document.querySelector('.img-upload__effects');
   var filterButton = document.querySelector('.effects__radio');
   var effectLevel = document.querySelector('.img-upload__effect-level');

@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var COMMENTS_COUNT = 5;
 
   var bigPictures = document.querySelector('.big-picture');
   var bigPictureImg = bigPictures.querySelector('img');
@@ -29,29 +30,15 @@
 
   bigPictureCancel.addEventListener('click', closeBigPicture);
 
-  var getBigPicture = function (arrayElement) {
-
-    commentsLoader.addEventListener('click', function () {
-
-    });
-
-    // var sortArray = arrayElement.comments.slice(0, 5);
-
-    var commentArrayLenght = arrayElement.comments.length;
-
-    openBigPicture();
-    bigPictureImg.setAttribute('src', arrayElement.url);
-    licesCout.textContent = arrayElement.likes;
-    commentsCount.textContent = commentArrayLenght;
-    socialCaption.textContent = arrayElement.description;
+  var getComments = function (commentsArray, count) {
 
     window.util.clearDomElements(commentsList, 'li');
 
-    for (var i = 0; i < commentArrayLenght; i++) {
+    for (var i = 0; i < commentsArray.length && i < count; i++) {
       var commentItem = comment.cloneNode(true);
 
       var socialPicture = commentItem.querySelector('.social__picture');
-      var commentArray = arrayElement.comments[i];
+      var commentArray = commentsArray[i];
       var socialText = commentItem.querySelector('.social__text');
 
       socialPicture.src = commentArray.avatar;
@@ -59,8 +46,36 @@
       socialText.textContent = commentArray.message;
       commentsList.appendChild(commentItem);
     }
+
+    if (count >= commentsArray.length) {
+      commentsLoader.classList.add('visually-hidden');
+    } else {
+      commentsLoader.classList.remove('visually-hidden');
+    }
+
+  };
+
+  var getBigPicture = function (arrayElement) {
+    commentsLoader.classList.remove('visually-hidden');
+
+    var commentsArray = arrayElement.comments.slice();
+
+    openBigPicture();
+    bigPictureImg.setAttribute('src', arrayElement.url);
+    licesCout.textContent = arrayElement.likes;
+    commentsCount.textContent = commentsArray.length;
+    socialCaption.textContent = arrayElement.description;
+
+    var countCommentToShow = COMMENTS_COUNT;
+
+    getComments(commentsArray, countCommentToShow);
+
+    commentsLoader.addEventListener('click', function () {
+      countCommentToShow += COMMENTS_COUNT;
+      getComments(commentsArray, countCommentToShow);
+    });
+
     socialCommentCount.classList.add('visually-hidden');
-    // commentsLoader.classList.add('visually-hidden');
   };
 
   window.big = {
@@ -68,3 +83,4 @@
   };
 
 })();
+

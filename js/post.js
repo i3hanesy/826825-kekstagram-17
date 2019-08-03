@@ -34,17 +34,16 @@
 
   var onError = function () {
     getResultMessageWindow('error');
+    window.preview.closeOverlay();
   };
 
   window.preview.uploadForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
-    var checkError = window.hashtag.showError();
-    if (!checkError) {
-      window.load.uploadData(HHR_URL_POST, new FormData(window.preview.uploadForm), onSuccess, onError);
+    window.load.uploadData(HHR_URL_POST, new FormData(window.preview.uploadForm), function () {
       window.preview.closeOverlay();
-    }
-
+      onSuccess();
+    }, onError);
   });
 
 })();
