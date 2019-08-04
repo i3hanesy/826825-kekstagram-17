@@ -137,8 +137,4 @@
 
   window.load.getData(XHR_URL, onSuccess);
 
-  window.pictures = {
-    pictures: pictures
-  };
-
 })();

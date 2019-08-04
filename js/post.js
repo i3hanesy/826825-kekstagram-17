@@ -2,7 +2,6 @@
 
 (function () {
   var HHR_URL_POST = 'https://js.dump.academy/kekstagram';
-  // var uploadForm = document.querySelector('.img-upload__form');
   var mainLocation = document.querySelector('main');
 
   var getResultMessageWindow = function (result) {
