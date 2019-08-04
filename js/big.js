@@ -5,7 +5,7 @@
 
   var bigPictures = document.querySelector('.big-picture');
   var bigPictureImg = bigPictures.querySelector('img');
-  var licesCout = bigPictures.querySelector('.likes-count');
+  var likesCount = bigPictures.querySelector('.likes-count');
   var commentsCount = bigPictures.querySelector('.comments-count');
   var socialCommentCount = bigPictures.querySelector('.social__comment-count');
   var socialCaption = bigPictures.querySelector('.social__caption');
@@ -62,7 +62,7 @@
 
     openBigPicture();
     bigPictureImg.setAttribute('src', arrayElement.url);
-    licesCout.textContent = arrayElement.likes;
+    likesCount.textContent = arrayElement.likes;
     commentsCount.textContent = commentsArray.length;
     socialCaption.textContent = arrayElement.description;
 

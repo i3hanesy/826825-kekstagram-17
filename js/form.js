@@ -114,7 +114,6 @@
 
   window.form = {
     textDescription: textDescription,
-    removeEffectLevel: removeEffectLevel,
     effectLevelValue: effectLevelValue,
     effectLevel: effectLevel
   };

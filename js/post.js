@@ -30,6 +30,7 @@
 
   var onSuccess = function () {
     getResultMessageWindow('success');
+    window.preview.closeOverlay();
   };
 
   var onError = function () {
@@ -40,10 +41,7 @@
   window.preview.uploadForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
-    window.load.uploadData(HHR_URL_POST, new FormData(window.preview.uploadForm), function () {
-      window.preview.closeOverlay();
-      onSuccess();
-    }, onError);
+    window.load.uploadData(HHR_URL_POST, new FormData(window.preview.uploadForm), onSuccess, onError);
   });
 
 })();
